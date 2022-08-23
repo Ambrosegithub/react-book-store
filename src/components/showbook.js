@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import BookCollection from './bookshelf';
-import AddbookToStore from './addbook';
+import AddBook from './addbook';
 
 const DisplayBooks = () => {
-  const [books, setBooks] = useState([]);
-
-  const submitBooks = () => setBooks();
+  const books = useSelector((state) => state.books);
 
   return (
     <div>
-      {books.map((books) => (
+      {books.map((book) => (
         <BookCollection
-          key={books.id}
-          title={books.title}
-          author={books.author}
+          key={book.id}
+          id={book.id}
+          title={book.title}
+          author={book.author}
         />
       ))}
-      <AddbookToStore submitBooks={submitBooks} />
+      <AddBook />
     </div>
   );
 };
