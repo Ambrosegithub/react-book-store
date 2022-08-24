@@ -25,13 +25,19 @@ const Books = [
   {
     id: 5,
     title: 'Treasure island',
-    author: 'Emily Bronte'
+    author: 'Emily Bronte',
   },
   {
     id: 6,
     title: 'Reader are Leader',
-    author: 'BEN Murray'
+    author: 'BEN Murray',
   },
+  {
+    id: 7,
+    title: 'Modern Javascript',
+    author: 'Esther Udondian',
+  },
+
 ];
 const bookReducer = (state = Books, action) => {
   switch (action.type) {
