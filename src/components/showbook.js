@@ -1,23 +1,33 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+/* eslit-disable */
+
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import BookCollection from './bookshelf';
 import AddBook from './addbook';
+import { fetchBooks } from '../redux/books/book';
 
 const DisplayBooks = () => {
   const books = useSelector((state) => state.books);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchBooks());
+  }, []);
 
   return (
-    <div>
+    <ul>
       {books.map((book) => (
-        <BookCollection
-          key={book.id}
-          id={book.id}
-          title={book.title}
-          author={book.author}
-        />
+        <li key={book.item_id}>
+          <BookCollection
+            item_id={book.item_id}
+            title={book.title}
+            author={book.author}
+          />
+        </li>
       ))}
+
       <AddBook />
-    </div>
+    </ul>
   );
 };
 

@@ -1,29 +1,27 @@
+/* eslint-disable */
+
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addedbooks } from '../redux/books/book';
+import { newBookFetch } from '../redux/books/book';
 
 const AddBook = () => {
   const dispatch = useDispatch();
-  const [form, setForm] = useState({ title: '', author: '' });
-  const handleChange = (e) => {
-    e.preventDefault();
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const [titleName, setTitle] = useState('');
+  const [authorName, setAuthor] = useState('');
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (form.title.trim() && form.author.trim()) {
       const data = {
-        id: Date.now(),
-        title: form.title,
-        author: form.author,
+        item_id: Number(Date.now()),
+        title: titleName,
+        author: authorName,
+        category: 'AMBROSE',
       };
-      dispatch(addedbooks(data));
-      setForm({ title: '', author: '' });
-    }
+      console.log(data);
+      dispatch(newBookFetch(data));
+      setTitle('');
+    setAuthor('');
+ //  }
   };
   return (
     <div>
@@ -33,15 +31,16 @@ const AddBook = () => {
           name="title"
           type="text"
           placeholder="Book title"
-          value={form.title}
-          onChange={handleChange}
+          value={titleName}
+          onInput={(e) => setTitle(e.target.value)}
+
         />
         <input
           name="author"
           type="text"
-          placeholder="Category"
-          value={form.author}
-          onChange={handleChange}
+          placeholder="Author"
+          value={authorName}
+          onInput={(e) => setAuthor(e.target.value)}
         />
         <button type="submit">
           ADD BOOK

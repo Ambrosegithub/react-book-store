@@ -1,67 +1,55 @@
-// define constant
-const ADD_BOOK = 'bookstore/bookS/ADD_BOOK';
-const REMOVE_BOOK = 'bookstore/bookS/REMOVE_BOOK';
-const Books = [
-  {
-    id: 1,
-    title: 'Think Big',
-    author: 'Ben Carson',
-  },
-  {
-    id: 2,
-    title: 'Eloquent Javascript',
-    author: 'Marijn Haverbeke',
-  },
-  {
-    id: 3,
-    title: 'Power of Mind',
-    author: 'Pastor Chris Oyakhilomen PHD',
-  },
-  {
-    id: 4,
-    title: 'Thing Fall Apart',
-    author: 'Chinwe Achebe',
-  },
-  {
-    id: 5,
-    title: 'Treasure island',
-    author: 'Emily Bronte',
-  },
-  {
-    id: 6,
-    title: 'Reader are Leader',
-    author: 'BEN Murray',
-  },
-  {
-    id: 7,
-    title: 'Modern Javascript',
-    author: 'Esther Udondian',
-  },
+/* eslint-disable */
 
-];
-const bookReducer = (state = Books, action) => {
+// define constant
+const ADD_BOOK = 'bookstore/books/ADD_BOOK';
+const REMOVE_BOOK = 'bookstore/books/REMOVE_BOOK';
+const getBook = 'bookstore/books/getBook';
+export const fetchBooks = () => async (dispatch) => {
+  const booksFetch = await fetch('https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/0NeLiHDReMMIAsyM7h0R/books', {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+    },
+  }).then((data) => data.json());
+
+  const books = [];
+  Object.keys(booksFetch).forEach((e) => {
+    books.push({ ...booksFetch[e][0], item_id: e });
+  });
+  dispatch({
+    type: getBook,
+    payload: books,
+  });
+};
+// add new book
+export const newBookFetch = (book) => async (dispatch) => {
+  await fetch('https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/0NeLiHDReMMIAsyM7h0R/books', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(book),
+  }).then(() => dispatch(fetchBooks()));  
+};
+export const deleteBookFetch = (item_id) => async (dispatch) => {
+  await fetch(`https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/0NeLiHDReMMIAsyM7h0R/books/${item_id}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({item_id}),
+  }).then(() => dispatch(fetchBooks()))
+};
+const initialState = [];
+export const bookReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_BOOK:
       return [
         ...state, action.book,
       ];
     case REMOVE_BOOK:
-      return state.filter((book) => book.id !== action.id);
+      return state.filter((book) => book.id !== action.item_id);
+    case getBook:
+      return action.payload;
     default:
       return state;
   }
 };
-
-export const addedbooks = (book) => ({
-
-  type: ADD_BOOK,
-  book,
-
-});
-
-export const RemovedBooks = (id) => ({
-  type: REMOVE_BOOK,
-  id,
-});
-
-export default bookReducer;

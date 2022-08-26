@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import checkBookStatus from '../redux/categories/categories';
 
 const BookCategory = () => {
-  const handlecheckStatus = () => {
+  const handlecheckStatus = (status) => {
     const dispatch = useDispatch();
-    dispatch(checkBookStatus);
+    dispatch(checkBookStatus(status));
   };
   return (
     <div>

@@ -1,25 +1,36 @@
+/* eslint-disable */
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { RemovedBooks } from '../redux/books/book';
+import { deleteBookFetch } from '../redux/books/book';
 
-const BookCollection = ({ id, title, author }) => {
+const BookCollection = ({ item_id, title, author }) => {
   const dispatch = useDispatch();
-  const handleDelete = (id) => {
-    dispatch(RemovedBooks(Number(id)));
+  
+  const handleDelete = (e) => {
+    const targetId = Number(e.target.id);
+    console.log(targetId)
+      dispatch(deleteBookFetch(targetId))
   };
-
   return (
-    <ul>
+    <div key={item_id}>
       <div>{title}</div>
       <div>{author}</div>
-      <button type="button" id={id} onClick={(e) => { handleDelete(e.target.id); }}>Remove books</button>
-    </ul>
+      <button
+            className="delete-btn"
+            id={item_id}
+            type="button"
+            onClick={(e) => handleDelete(e)}
+          >
+            Remove
+          </button>
+
+    </div>
   );
 };
 
 BookCollection.propTypes = {
-  id: PropTypes.number.isRequired,
+  item_id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
 };
