@@ -4,19 +4,21 @@ import { useDispatch } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { deleteBookFetch } from '../redux/books/book';
 
-const BookCollection = ({ item_id, title, author }) => {
+const BookCollection = ({ item_id, category, title, author }) => {
   const dispatch = useDispatch();
   
   const handleDelete = (e) => {
     const targetId = Number(e.target.id);
-    console.log(targetId)
       dispatch(deleteBookFetch(targetId))
   };
   return (
-    <div key={item_id}>
-      <div>{title}</div>
-      <div>{author}</div>
-      <button
+    <div key={item_id} className="container-btn">
+      <div className='category'>{category}</div>
+      <div className='title'>{title}</div>
+      <div className='author'>{author}</div>
+      <div className="btn-container">
+        <button className="comment-btn" type="button">Comments</button>
+        <button
             className="delete-btn"
             id={item_id}
             type="button"
@@ -24,7 +26,8 @@ const BookCollection = ({ item_id, title, author }) => {
           >
             Remove
           </button>
-
+          <button className="edit-btn" type="button">Edit</button>
+      </div>
     </div>
   );
 };
