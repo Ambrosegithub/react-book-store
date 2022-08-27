@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import NavBar from './components/navbar';
+import NavBar from './components/navbar/navbar';
 import BookCategory from './components/bookcategory';
 import DisplayBooks from './components/showbook';
 
